@@ -1,0 +1,2747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MADZEE REAL ESTATE | Luxury Properties in Abuja</title>
+    <meta name="description" content="MADZEE REAL ESTATE - Premium real estate brand for luxury homes, lands, rentals, and investments in Abuja, Nigeria.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ============================================
+           MADZEE REAL ESTATE - LUXURY STYLES
+           ============================================ */
+        
+        /* CSS Variables */
+        :root {
+            --primary: #0a0e1a;
+            --secondary: #0d1221;
+            --accent-blue: #00d4ff;
+            --accent-gold: #d4af37;
+            --accent-gold-light: #f0d875;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b8c8;
+            --text-muted: #6b7280;
+            --glass-bg: rgba(13, 18, 33, 0.7);
+            --glass-border: rgba(0, 212, 255, 0.15);
+            --glass-gold: rgba(212, 175, 55, 0.2);
+            --gradient-blue: linear-gradient(135deg, #00d4ff 0%, #0066ff 100%);
+            --gradient-gold: linear-gradient(135deg, #d4af37 0%, #f0d875 50%, #d4af37 100%);
+            --shadow-glow: 0 0 30px rgba(0, 212, 255, 0.3);
+            --shadow-gold: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Reset & Base */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        ::selection {
+            background: rgba(0, 212, 255, 0.3);
+            color: #fff;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-blue);
+            border-radius: 4px;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        /* ============================================
+           LOADING SCREEN
+           ============================================ */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--primary);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-ring {
+            width: 80px;
+            height: 80px;
+            border: 3px solid transparent;
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: relative;
+        }
+
+        .loader-ring::before {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border: 3px solid transparent;
+            border-top-color: var(--accent-gold);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite reverse;
+        }
+
+        .loader-ring::after {
+            content: '';
+            position: absolute;
+            inset: 12px;
+            border: 3px solid transparent;
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        .loader-text {
+            margin-top: 2rem;
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.3em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* ============================================
+           NAVBAR
+           ============================================ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 0.7rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: 0.1em;
+        }
+
+        .logo span {
+            color: var(--accent-blue);
+            -webkit-text-fill-color: var(--accent-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 14, 26, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-video-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+
+        .hero-video-bg video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(10, 14, 26, 0.6) 0%,
+                rgba(10, 14, 26, 0.8) 50%,
+                rgba(10, 14, 26, 0.95) 100%
+            );
+            z-index: 2;
+        }
+
+        #hero-canvas {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 4;
+            text-align: center;
+            padding: 2rem;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--accent-gold);
+            border-radius: 50px;
+            color: var(--accent-gold);
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease both;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-title .gold {
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-title .blue {
+            color: var(--accent-blue);
+            -webkit-text-fill-color: var(--accent-blue);
+        }
+
+        .hero-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient-gold);
+            color: var(--primary);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--accent-blue);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-blue);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            animation: bounce 2s ease infinite;
+        }
+
+        .scroll-indicator i {
+            font-size: 1.2rem;
+            color: var(--accent-gold);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+           MUSIC CONTROL
+           ============================================ */
+        .music-control {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--accent-gold);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .music-control.playing {
+            animation: musicPulse 2s ease infinite;
+        }
+
+        @keyframes musicPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+        }
+
+        /* ============================================
+           GLASSMORPHISM CARD
+           ============================================ */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        /* ============================================
+           CEO SECTION
+           ============================================ */
+        .ceo-section {
+            padding: 6rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ceo-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .ceo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .ceo-image-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .ceo-image-frame {
+            position: relative;
+            width: 320px;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid var(--accent-gold);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .ceo-image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .ceo-image-frame:hover img {
+            transform: scale(1.05);
+        }
+
+        .ceo-image-glow {
+            position: absolute;
+            inset: -3px;
+            border-radius: 22px;
+            background: var(--gradient-gold);
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(20px);
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.3; filter: blur(15px); }
+            50% { opacity: 0.6; filter: blur(25px); }
+        }
+
+        .ceo-badge-ring {
+            position: absolute;
+            width: 360px;
+            height: 440px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 25px;
+            animation: slowRotate 20s linear infinite;
+        }
+
+        @keyframes slowRotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .ceo-content {
+            padding: 1rem;
+        }
+
+        .ceo-label {
+            color: var(--accent-blue);
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .ceo-name {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .ceo-title {
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .ceo-bio {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .ceo-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .ceo-social a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-gold);
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .ceo-social a:hover {
+            background: var(--accent-gold);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        /* ============================================
+           PROPERTIES SECTION
+           ============================================ */
+        .properties-section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .properties-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .properties-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .property-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .property-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.15);
+        }
+
+        .property-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .property-card:hover .property-image img {
+            transform: scale(1.1);
+        }
+
+        .property-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.4rem 1rem;
+            background: var(--gradient-gold);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .property-price {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1.2rem;
+            background: rgba(10, 14, 26, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 10px;
+        }
+
+        .property-info {
+            padding: 1.5rem;
+        }
+
+        .property-name {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .property-location {
+            color: var(--accent-blue);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .property-features {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .property-features span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .property-features i {
+            color: var(--accent-gold);
+            font-size: 0.8rem;
+        }
+
+        .property-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: transparent;
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .property-btn:hover {
+            background: var(--accent-blue);
+            color: var(--primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* Featured Property (Gudu from video) */
+        .featured-property {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            min-height: 400px;
+        }
+
+        .featured-property .property-image {
+            height: 100%;
+            min-height: 400px;
+        }
+
+        .featured-property .property-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .featured-label {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-radius: 50px;
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+
+        .featured-property .property-name {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .featured-property .property-location {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-property .property-btn {
+            margin-top: 1rem;
+            width: fit-content;
+            padding: 1rem 2.5rem;
+        }
+
+        /* ============================================
+           VIDEO GALLERY SECTION
+           ============================================ */
+        .video-section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .video-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+        }
+
+        .video-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .video-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--secondary);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
+        }
+
+        .video-card:hover {
+            border-color: var(--accent-gold);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .video-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            min-height: 300px;
+        }
+
+        .video-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .video-card:hover .video-play-btn {
+            background: var(--accent-gold);
+            color: var(--primary);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(transparent 50%, rgba(10, 14, 26, 0.9) 100%);
+            z-index: 1;
+        }
+
+        .video-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            z-index: 2;
+        }
+
+        .video-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .video-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .video-small-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .video-small-cards .video-card {
+            flex: 1;
+        }
+
+        .video-small-cards .video-card video {
+            min-height: 200px;
+        }
+
+        /* Video Modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 5000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .video-modal-content {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        .video-modal video {
+            width: 100%;
+            display: block;
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .video-modal-close:hover {
+            background: var(--accent-gold);
+            color: var(--primary);
+        }
+
+        /* ============================================
+           GALLERY SECTION
+           ============================================ */
+        .gallery-section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .gallery-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .masonry-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            columns: 3;
+            column-gap: 1.5rem;
+        }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .masonry-item img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .masonry-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .masonry-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(transparent 30%, rgba(10, 14, 26, 0.8) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+        }
+
+        .masonry-item:hover .masonry-overlay {
+            opacity: 1;
+        }
+
+        .masonry-overlay span {
+            color: var(--accent-gold);
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 14, 26, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 5000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: var(--accent-gold);
+            color: var(--primary);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--accent-gold);
+            color: var(--primary);
+        }
+
+        .lightbox-prev { left: 2rem; }
+        .lightbox-next { right: 2rem; }
+
+        /* ============================================
+           ABOUT SECTION
+           ============================================ */
+        .about-section {
+            padding: 6rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+        }
+
+        .about-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-text {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+            line-height: 2;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .stat-item:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .stat-number {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* ============================================
+           CONTACT SECTION
+           ============================================ */
+        .contact-section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1.2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            border-color: var(--accent-blue);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 45px;
+            height: 45px;
+            min-width: 45px;
+            border-radius: 12px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+        }
+
+        .contact-details h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .contact-details p,
+        .contact-details a {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-details a:hover {
+            color: var(--accent-gold);
+        }
+
+        .contact-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .contact-social a {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-gold);
+            font-size: 1.3rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .contact-social a:hover {
+            background: var(--accent-gold);
+            color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            height: 100%;
+            min-height: 400px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            border: none;
+            filter: grayscale(80%) invert(90%);
+        }
+
+        .whatsapp-float-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-float-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            padding: 4rem 2rem 2rem;
+            position: relative;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: var(--gradient-gold);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .footer-brand .logo {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .footer-links h4 {
+            color: var(--accent-gold);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-social a {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: var(--accent-gold);
+            color: var(--primary);
+            border-color: var(--accent-gold);
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--accent-gold);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 998;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent-gold);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        /* ============================================
+           ANIMATED PARTICLES CANVAS
+           ============================================ */
+        #particles-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* ============================================
+           SCROLL REVEAL
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .ceo-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .ceo-image-wrapper {
+                order: -1;
+            }
+
+            .ceo-social {
+                justify-content: center;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .video-small-cards {
+                flex-direction: row;
+            }
+
+            .video-small-cards .video-card {
+                flex: 1;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .masonry-grid {
+                columns: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .featured-property {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-property .property-image {
+                min-height: 250px;
+            }
+
+            .about-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .video-small-cards {
+                flex-direction: column;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .masonry-grid {
+                columns: 1;
+            }
+
+            .lightbox-nav {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
+            }
+
+            .ceo-image-frame {
+                width: 260px;
+                height: 320px;
+            }
+
+            .ceo-badge-ring {
+                width: 290px;
+                height: 350px;
+            }
+
+            .music-control {
+                bottom: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .back-to-top {
+                bottom: 1rem;
+                left: 1rem;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+         LOADING SCREEN
+         ============================================ -->
+    <div id="loading-screen">
+        <div class="loader-ring"></div>
+        <div class="loader-text">MADZEE REAL ESTATE</div>
+    </div>
+
+    <!-- ============================================
+         PARTICLES BACKGROUND
+         ============================================ -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ============================================
+         NAVBAR
+         ============================================ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">MADZEE <span>REAL ESTATE</span></a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#ceo">CEO</a></li>
+                <li><a href="#properties">Properties</a></li>
+                <li><a href="#videos">Videos</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#home" class="mobile-link">Home</a>
+        <a href="#ceo" class="mobile-link">CEO</a>
+        <a href="#properties" class="mobile-link">Properties</a>
+        <a href="#videos" class="mobile-link">Videos</a>
+        <a href="#gallery" class="mobile-link">Gallery</a>
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+
+    <!-- ============================================
+         HERO SECTION
+         ============================================ -->
+    <section class="hero" id="home">
+        <div class="hero-video-bg">
+            <video autoplay muted loop playsinline poster="images/hero-bg.jpg">
+                <source src="videos/property-tour-gudu.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="hero-overlay"></div>
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content">
+            <div class="hero-badge">Premium Real Estate</div>
+            <h1 class="hero-title">
+                Find <span class="gold">Luxury</span><br>
+                <span class="blue">Properties</span> in Abuja
+            </h1>
+            <p class="hero-subtitle">Homes &bull; Lands &bull; Rentals &bull; Investments</p>
+            <div class="hero-buttons">
+                <a href="#properties" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Explore Properties
+                </a>
+                <a href="https://wa.me/2348064971706?text=Hello%20MADZEE%20REAL%20ESTATE%20,%20I%20want%20house,%20land,%20rent,%20or%20property%20information." 
+                   class="btn btn-secondary" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Contact on WhatsApp
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CEO SECTION
+         ============================================ -->
+    <section class="ceo-section" id="ceo">
+        <div class="ceo-container">
+            <div class="ceo-image-wrapper">
+                <div class="ceo-badge-ring"></div>
+                <div class="ceo-image-frame">
+                    <div class="ceo-image-glow"></div>
+                    <img src="images/ceo.jpg" alt="Muhammad Ahmed Umar - CEO of MADZEE REAL ESTATE">
+                </div>
+            </div>
+            <div class="ceo-content">
+                <div class="ceo-label">Founder & Chief Executive Officer</div>
+                <h2 class="ceo-name">MUHAMMAD AHMED UMAR</h2>
+                <div class="ceo-title">Founder & CEO, MADZEE REAL ESTATE</div>
+                <p class="ceo-bio">
+                    Muhammad Ahmed Umar is a modern real estate entrepreneur focused on luxury properties, 
+                    smart investments, and trusted property solutions across Abuja and Nigeria. With a 
+                    passion for excellence and client satisfaction, he has built MADZEE REAL ESTATE into 
+                    a premium brand that delivers world-class real estate services with a modern digital 
+                    experience and professional integrity.
+                </p>
+                <div class="ceo-social">
+                    <a href="https://twitter.com/madzeeRS" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://facebook.com/madzeeRS" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://tiktok.com/@madzeeRS" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://wa.me/2348064971706" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PROPERTIES SECTION
+         ============================================ -->
+    <section class="properties-section" id="properties">
+        <div class="reveal">
+            <h2 class="section-title">Luxury Properties</h2>
+            <p class="section-subtitle">Discover premium homes, lands, and investment opportunities</p>
+        </div>
+        <div class="properties-grid">
+            <!-- Featured Property (Gudu - Video Property) -->
+            <div class="property-card featured-property reveal">
+                <div class="property-image">
+                    <img src="images/property-gudu.jpg" alt="4 Bedroom Terrace Duplex - Gudu, Abuja">
+                    <span class="property-badge">Featured</span>
+                    <span class="property-price">&#8358;220M</span>
+                </div>
+                <div class="property-info">
+                    <span class="featured-label"><i class="fas fa-star"></i> Hot Property</span>
+                    <h3 class="property-name">4 Bedroom Terrace Duplex</h3>
+                    <div class="property-location"><i class="fas fa-map-marker-alt"></i> Gudu, Abuja</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.7;">
+                        Luxurious 4-bedroom terrace duplex in a serene, secure small community. 
+                        Features spacious living areas, modern kitchen, premium bathrooms, and ample parking. 
+                        Perfect for families seeking comfort and elegance in Abuja.
+                    </p>
+                    <div class="property-features">
+                        <span><i class="fas fa-bed"></i> 4 Beds</span>
+                        <span><i class="fas fa-bath"></i> 5 Baths</span>
+                        <span><i class="fas fa-car"></i> 2 Parking</span>
+                        <span><i class="fas fa-ruler-combined"></i> 450 sqm</span>
+                    </div>
+                    <a href="https://wa.me/2348064971706?text=Hello%20MADZEE%20REAL%20ESTATE%20,%20I%20want%20house,%20land,%20rent,%20or%20property%20information." 
+                       class="property-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Inquire on WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- Property 2 -->
+            <div class="property-card reveal">
+                <div class="property-image">
+                    <img src="images/property-duplex-maitama.jpg" alt="Luxury Duplex - Maitama">
+                    <span class="property-badge">For Sale</span>
+                    <span class="property-price">&#8358;850M</span>
+                </div>
+                <div class="property-info">
+                    <h3 class="property-name">Luxury Duplex</h3>
+                    <div class="property-location"><i class="fas fa-map-marker-alt"></i> Maitama, Abuja</div>
+                    <div class="property-features">
+                        <span><i class="fas fa-bed"></i> 6 Beds</span>
+                        <span><i class="fas fa-bath"></i> 7 Baths</span>
+                        <span><i class="fas fa-swimming-pool"></i> Pool</span>
+                    </div>
+                    <a href="https://wa.me/2348064971706?text=Hello%20MADZEE%20REAL%20ESTATE%20,%20I%20want%20house,%20land,%20rent,%20or%20property%20information." 
+                       class="property-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Inquire Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- Property 3 -->
+            <div class="property-card reveal">
+                <div class="property-image">
+                    <img src="images/property-apartment-wuse2.jpg" alt="Smart Apartment - Wuse 2">
+                    <span class="property-badge">For Sale</span>
+                    <span class="property-price">&#8358;180M</span>
+                </div>
+                <div class="property-info">
+                    <h3 class="property-name">Smart Apartment</h3>
+                    <div class="property-location"><i class="fas fa-map-marker-alt"></i> Wuse 2, Abuja</div>
+                    <div class="property-features">
+                        <span><i class="fas fa-bed"></i> 3 Beds</span>
+                        <span><i class="fas fa-bath"></i> 3 Baths</span>
+                        <span><i class="fas fa-wifi"></i> Smart</span>
+                    </div>
+                    <a href="https://wa.me/2348064971706?text=Hello%20MADZEE%20REAL%20ESTATE%20,%20I%20want%20house,%20land,%20rent,%20or%20property%20information." 
+                       class="property-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Inquire Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- Property 4 -->
+            <div class="property-card reveal">
+                <div class="property-image">
+                    <img src="images/property-land-guzape.jpg" alt="Land for Sale - Guzape">
+                    <span class="property-badge">Land</span>
+                    <span class="property-price">&#8358;45M</span>
+                </div>
+                <div class="property-info">
+                    <h3 class="property-name">Premium Land</h3>
+                    <div class="property-location"><i class="fas fa-map-marker-alt"></i> Guzape, Abuja</div>
+                    <div class="property-features">
+                        <span><i class="fas fa-ruler-combined"></i> 1,200 sqm</span>
+                        <span><i class="fas fa-mountain"></i> View</span>
+                        <span><i class="fas fa-file-contract"></i> C of O</span>
+                    </div>
+                    <a href="https://wa.me/2348064971706?text=Hello%20MADZEE%20REAL%20ESTATE%20,%20I%20want%20house,%20land,%20rent,%20or%20property%20information." 
+                       class="property-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Inquire Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- Property 5 -->
+            <div class="property-card reveal">
+                <div class="property-image">
+                    <img src="images/property-rental-gwarinpa.jpg" alt="Rental Apartment - Gwarinpa">
+                    <span class="property-badge">For Rent</span>
+                    <span class="property-price">&#8358;4.5M/yr</span>
+                </div>
+                <div class="property-info">
+                    <h3 class="property-name">Rental Apartment</h3>
+                    <div class="property-location"><i class="fas fa-map-marker-alt"></i> Gwarinpa, Abuja</div>
+                    <div class="property-features">
+                        <span><i class="fas fa-bed"></i> 3 Beds</span>
+                        <span><i class="fas fa-bath"></i> 3 Baths</span>
+                        <span><i class="fas fa-child"></i> Family</span>
+                    </div>
+                    <a href="https://wa.me/2348064971706?text=Hello%20MADZEE%20REAL%20ESTATE%20,%20I%20want%20house,%20land,%20rent,%20or%20property%20information." 
+                       class="property-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Inquire Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- Property 6 -->
+            <div class="property-card reveal">
+                <div class="property-image">
+                    <img src="images/property-villa-asokoro.jpg" alt="Modern Villa - Asokoro">
+                    <span class="property-badge">For Sale</span>
+                    <span class="property-price">&#8358;1.2B</span>
+                </div>
+                <div class="property-info">
+                    <h3 class="property-name">Modern Villa</h3>
+                    <div class="property-location"><i class="fas fa-map-marker-alt"></i> Asokoro, Abuja</div>
+                    <div class="property-features">
+                        <span><i class="fas fa-bed"></i> 7 Beds</span>
+                        <span><i class="fas fa-bath"></i> 8 Baths</span>
+                        <span><i class="fas fa-swimming-pool"></i> Pool</span>
+                    </div>
+                    <a href="https://wa.me/2348064971706?text=Hello%20MADZEE%20REAL%20ESTATE%20,%20I%20want%20house,%20land,%20rent,%20or%20property%20information." 
+                       class="property-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Inquire Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         VIDEO GALLERY SECTION
+         ============================================ -->
+    <section class="video-section" id="videos">
+        <div class="reveal">
+            <h2 class="section-title">Property Videos</h2>
+            <p class="section-subtitle">Virtual tours of our premium listings</p>
+        </div>
+        <div class="video-grid reveal">
+            <div class="video-card" onclick="openVideoModal('videos/property-tour-gudu.mp4')">
+                <video muted loop playsinline poster="images/property-gudu.jpg">
+                    <source src="videos/property-tour-gudu.mp4" type="video/mp4">
+                </video>
+                <div class="video-overlay"></div>
+                <div class="video-play-btn"><i class="fas fa-play"></i></div>
+                <div class="video-info">
+                    <h3>4 Bedroom Terrace Duplex Tour</h3>
+                    <p>Gudu, Abuja - Full Property Walkthrough</p>
+                </div>
+            </div>
+            <div class="video-small-cards">
+                <div class="video-card" onclick="openVideoModal('videos/property-exterior.mp4')">
+                    <video muted loop playsinline poster="images/property-gudu.jpg">
+                        <source src="videos/property-exterior.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-overlay"></div>
+                    <div class="video-play-btn"><i class="fas fa-play"></i></div>
+                    <div class="video-info">
+                        <h3>Property Exterior View</h3>
+                        <p>Gudu Terrace Community</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal" onclick="closeVideoModal()">
+        <div class="video-modal-content" onclick="event.stopPropagation()">
+            <button class="video-modal-close" onclick="closeVideoModal()"><i class="fas fa-times"></i></button>
+            <video id="modalVideo" controls playsinline>
+                <source src="" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <!-- ============================================
+         GALLERY SECTION
+         ============================================ -->
+    <section class="gallery-section" id="gallery">
+        <div class="reveal">
+            <h2 class="section-title">Property Gallery</h2>
+            <p class="section-subtitle">Explore luxury interiors and exteriors</p>
+        </div>
+        <div class="masonry-grid">
+            <div class="masonry-item reveal" onclick="openLightbox(0)">
+                <img src="images/gallery-1.jpg" alt="Luxury Living Room">
+                <div class="masonry-overlay"><span><i class="fas fa-expand"></i> Living Room</span></div>
+            </div>
+            <div class="masonry-item reveal" onclick="openLightbox(1)">
+                <img src="images/gallery-2.jpg" alt="Modern Kitchen">
+                <div class="masonry-overlay"><span><i class="fas fa-expand"></i> Kitchen</span></div>
+            </div>
+            <div class="masonry-item reveal" onclick="openLightbox(2)">
+                <img src="images/gallery-3.jpg" alt="Master Bedroom">
+                <div class="masonry-overlay"><span><i class="fas fa-expand"></i> Master Suite</span></div>
+            </div>
+            <div class="masonry-item reveal" onclick="openLightbox(3)">
+                <img src="images/gallery-4.jpg" alt="Luxury Bathroom">
+                <div class="masonry-overlay"><span><i class="fas fa-expand"></i> Bathroom</span></div>
+            </div>
+            <div class="masonry-item reveal" onclick="openLightbox(4)">
+                <img src="images/gallery-5.jpg" alt="Modern Home Exterior">
+                <div class="masonry-overlay"><span><i class="fas fa-expand"></i> Exterior</span></div>
+            </div>
+            <div class="masonry-item reveal" onclick="openLightbox(5)">
+                <img src="images/gallery-6.jpg" alt="Home Cinema">
+                <div class="masonry-overlay"><span><i class="fas fa-expand"></i> Cinema Room</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+        <button class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); navigateLightbox(-1)"><i class="fas fa-chevron-left"></i></button>
+        <img id="lightboxImg" src="" alt="Gallery Image">
+        <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); navigateLightbox(1)"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- ============================================
+         ABOUT SECTION
+         ============================================ -->
+    <section class="about-section" id="about">
+        <div class="about-container">
+            <div class="reveal">
+                <h2 class="section-title">About Us</h2>
+                <p class="about-text">
+                    MADZEE REAL ESTATE is a premium real estate brand focused on helping clients buy, 
+                    rent, and invest in quality properties across Abuja and Nigeria. We provide trusted 
+                    real estate solutions with modern digital experience and professional service. Our 
+                    commitment to excellence, transparency, and customer satisfaction has made us the 
+                    preferred choice for luxury property seekers and investors alike.
+                </p>
+            </div>
+            <div class="about-stats">
+                <div class="stat-item reveal">
+                    <div class="stat-number" data-count="500">0</div>
+                    <div class="stat-label">Properties Sold</div>
+                </div>
+                <div class="stat-item reveal">
+                    <div class="stat-number" data-count="350">0</div>
+                    <div class="stat-label">Happy Clients</div>
+                </div>
+                <div class="stat-item reveal">
+                    <div class="stat-number" data-count="15">0</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat-item reveal">
+                    <div class="stat-number" data-count="50">0</div>
+                    <div class="stat-label">Expert Agents</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CONTACT SECTION
+         ============================================ -->
+    <section class="contact-section" id="contact">
+        <div class="reveal">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle">We're here to help you find your dream property</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info reveal">
+                <h3>Contact Information</h3>
+                
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+                    <div class="contact-details">
+                        <h4>WhatsApp</h4>
+                        <a href="https://wa.me/2348064971706" target="_blank">+234 806 497 1706</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="contact-details">
+                        <h4>Email</h4>
+                        <a href="mailto:madzeerealestate@gmail.com">madzeerealestate@gmail.com</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                    <div class="contact-details">
+                        <h4>Phone</h4>
+                        <a href="tel:+2348064971706">+234 806 497 1706</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="contact-details">
+                        <h4>Office Address</h4>
+                        <p>Bataya Office No. 12,<br>Second Floor Beside AGI,<br>FCDA, FCT Abuja, Nigeria</p>
+                    </div>
+                </div>
+
+                <a href="https://wa.me/2348064971706?text=Hello%20MADZEE%20REAL%20ESTATE%20,%20I%20want%20house,%20land,%20rent,%20or%20property%20information." 
+                   class="whatsapp-float-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+
+                <div class="contact-social">
+                    <a href="https://twitter.com/madzeeRS" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://facebook.com/madzeeRS" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://tiktok.com/@madzeeRS" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="mailto:madzeerealestate@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="map-container reveal">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.6!2d7.4951!3d9.0579!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0ba6c5ded5f1%3A0x4c0f5c7d87d5c0e5!2sFCDA%2C%20Abuja!5e0!3m2!1sen!2sng!4v1" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="#" class="logo">MADZEE <span>REAL ESTATE</span></a>
+                <p>Your trusted partner for luxury properties, land acquisitions, and smart real estate investments across Abuja and Nigeria.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#properties">Properties</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Properties</h4>
+                <ul>
+                    <li><a href="#properties">Luxury Homes</a></li>
+                    <li><a href="#properties">Lands for Sale</a></li>
+                    <li><a href="#properties">Rental Apartments</a></li>
+                    <li><a href="#properties">Commercial</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="tel:+2348064971706">+234 806 497 1706</a></li>
+                    <li><a href="mailto:madzeerealestate@gmail.com">madzeerealestate@gmail.com</a></li>
+                    <li><a href="https://wa.me/2348064971706" target="_blank">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 MADZEE REAL ESTATE. All Rights Reserved.</p>
+            <div class="footer-social">
+                <a href="https://twitter.com/madzeeRS" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://facebook.com/madzeeRS" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://tiktok.com/@madzeeRS" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         MUSIC CONTROL
+         ============================================ -->
+    <button class="music-control" id="musicControl" onclick="toggleMusic()" aria-label="Toggle Music">
+        <i class="fas fa-volume-mute" id="musicIcon"></i>
+    </button>
+
+    <audio id="bgMusic" loop>
+        <source src="music/background.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ============================================
+         BACK TO TOP
+         ============================================ -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()" aria-label="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ============================================
+         JAVASCRIPT
+         ============================================ -->
+    <script>
+        // ============================================
+        // LOADING SCREEN
+        // ============================================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+            }, 2000);
+        });
+
+        // ============================================
+        // NAVBAR SCROLL EFFECT
+        // ============================================
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // ============================================
+        // GSAP SCROLL ANIMATIONS
+        // ============================================
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Reveal animations
+        document.querySelectorAll('.reveal').forEach((el, i) => {
+            gsap.fromTo(el, 
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 85%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        });
+
+        // Stat counter animation
+        document.querySelectorAll('.stat-number').forEach(stat => {
+            const target = parseInt(stat.getAttribute('data-count'));
+            gsap.to(stat, {
+                innerHTML: target,
+                duration: 2,
+                ease: 'power2.out',
+                snap: { innerHTML: 1 },
+                scrollTrigger: {
+                    trigger: stat,
+                    start: 'top 85%'
+                },
+                onUpdate: function() {
+                    stat.innerHTML = Math.round(this.targets()[0].innerHTML) + '+';
+                }
+            });
+        });
+
+        // Property cards stagger
+        gsap.fromTo('.property-card:not(.featured-property)',
+            { opacity: 0, y: 60 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.15,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.properties-grid',
+                    start: 'top 80%'
+                }
+            }
+        );
+
+        // Masonry items stagger
+        gsap.fromTo('.masonry-item',
+            { opacity: 0, scale: 0.9 },
+            {
+                opacity: 1,
+                scale: 1,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.masonry-grid',
+                    start: 'top 80%'
+                }
+            }
+        );
+
+        // ============================================
+        // THREE.JS HERO 3D ANIMATION
+        // ============================================
+        (function initHero3D() {
+            const canvas = document.getElementById('hero-canvas');
+            if (!canvas) return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Create floating geometric shapes
+            const geometries = [
+                new THREE.IcosahedronGeometry(0.6, 0),
+                new THREE.OctahedronGeometry(0.5, 0),
+                new THREE.TetrahedronGeometry(0.5, 0),
+                new THREE.BoxGeometry(0.5, 0.5, 0.5),
+                new THREE.DodecahedronGeometry(0.4, 0)
+            ];
+
+            const shapes = [];
+            const colors = [0x00d4ff, 0xd4af37, 0x00d4ff, 0xd4af37, 0x00d4ff];
+
+            for (let i = 0; i < 15; i++) {
+                const geo = geometries[i % geometries.length];
+                const mat = new THREE.MeshBasicMaterial({
+                    color: colors[i % colors.length],
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.3
+                });
+                const mesh = new THREE.Mesh(geo, mat);
+                mesh.position.x = (Math.random() - 0.5) * 15;
+                mesh.position.y = (Math.random() - 0.5) * 10;
+                mesh.position.z = (Math.random() - 0.5) * 10 - 3;
+                mesh.rotation.x = Math.random() * Math.PI;
+                mesh.rotation.y = Math.random() * Math.PI;
+                scene.add(mesh);
+                shapes.push({
+                    mesh,
+                    rotSpeedX: (Math.random() - 0.5) * 0.01,
+                    rotSpeedY: (Math.random() - 0.5) * 0.01,
+                    floatSpeed: 0.003 + Math.random() * 0.005,
+                    floatOffset: Math.random() * Math.PI * 2
+                });
+            }
+
+            // Add glowing particles
+            const particlesGeo = new THREE.BufferGeometry();
+            const particleCount = 200;
+            const posArray = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 20;
+            }
+
+            particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMat = new THREE.PointsMaterial({
+                size: 0.03,
+                color: 0xd4af37,
+                transparent: true,
+                opacity: 0.6,
+                blending: THREE.AdditiveBlending
+            });
+            const particles = new THREE.Points(particlesGeo, particlesMat);
+            scene.add(particles);
+
+            camera.position.z = 5;
+
+            let mouseX = 0, mouseY = 0;
+            document.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                shapes.forEach((shape, i) => {
+                    shape.mesh.rotation.x += shape.rotSpeedX;
+                    shape.mesh.rotation.y += shape.rotSpeedY;
+                    shape.mesh.position.y += Math.sin(Date.now() * shape.floatSpeed + shape.floatOffset) * 0.002;
+                });
+
+                particles.rotation.y += 0.0005;
+                particles.rotation.x += 0.0002;
+
+                camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.02;
+                camera.position.y += (-mouseY * 0.5 - camera.position.y) * 0.02;
+                camera.lookAt(scene.position);
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        })();
+
+        // ============================================
+        // FLOATING PARTICLES BACKGROUND
+        // ============================================
+        (function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            const particleArray = [];
+            const particleCount = 60;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.3;
+                    this.speedY = (Math.random() - 0.5) * 0.3;
+                    this.opacity = Math.random() * 0.5 + 0.1;
+                    this.color = Math.random() > 0.5 ? '0, 212, 255' : '212, 175, 55';
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+                        this.reset();
+                    }
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                particleArray.push(new Particle());
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, width, height);
+                particleArray.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+
+                // Draw connections
+                for (let i = 0; i < particleArray.length; i++) {
+                    for (let j = i + 1; j < particleArray.length; j++) {
+                        const dx = particleArray[i].x - particleArray[j].x;
+                        const dy = particleArray[i].y - particleArray[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(0, 212, 255, ${0.05 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.moveTo(particleArray[i].x, particleArray[i].y);
+                            ctx.lineTo(particleArray[j].x, particleArray[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                requestAnimationFrame(animateParticles);
+            }
+            animateParticles();
+        })();
+
+        // ============================================
+        // VIDEO MODAL
+        // ============================================
+        function openVideoModal(src) {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            video.src = src;
+            modal.classList.add('active');
+            video.play();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            video.pause();
+            video.src = '';
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ============================================
+        // LIGHTBOX GALLERY
+        // ============================================
+        const galleryImages = [
+            'images/gallery-1.jpg',
+            'images/gallery-2.jpg',
+            'images/gallery-3.jpg',
+            'images/gallery-4.jpg',
+            'images/gallery-5.jpg',
+            'images/gallery-6.jpg'
+        ];
+        let currentImageIndex = 0;
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightboxImg');
+            img.src = galleryImages[index];
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function navigateLightbox(direction) {
+            currentImageIndex = (currentImageIndex + direction + galleryImages.length) % galleryImages.length;
+            document.getElementById('lightboxImg').src = galleryImages[currentImageIndex];
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+                closeVideoModal();
+            }
+            if (document.getElementById('lightbox').classList.contains('active')) {
+                if (e.key === 'ArrowLeft') navigateLightbox(-1);
+                if (e.key === 'ArrowRight') navigateLightbox(1);
+            }
+        });
+
+        // ============================================
+        // MUSIC CONTROL
+        // ============================================
+        let musicPlaying = false;
+        const bgMusic = document.getElementById('bgMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicControl = document.getElementById('musicControl');
+
+        function toggleMusic() {
+            if (musicPlaying) {
+                bgMusic.pause();
+                musicIcon.className = 'fas fa-volume-mute';
+                musicControl.classList.remove('playing');
+            } else {
+                bgMusic.volume = 0.3;
+                bgMusic.play().catch(() => {});
+                musicIcon.className = 'fas fa-volume-up';
+                musicControl.classList.add('playing');
+            }
+            musicPlaying = !musicPlaying;
+        }
+
+        // ============================================
+        // BACK TO TOP
+        // ============================================
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================
+        // SMOOTH SCROLL
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ============================================
+        // VIDEO CARD HOVER PLAY
+        // ============================================
+        document.querySelectorAll('.video-card video').forEach(video => {
+            const card = video.closest('.video-card');
+            card.addEventListener('mouseenter', () => {
+                video.play().catch(() => {});
+            });
+            card.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        });
+
+        // ============================================
+        // HERO VIDEO HANDLING (Mobile)
+        // ============================================
+        const heroVideo = document.querySelector('.hero-video-bg video');
+        if (heroVideo) {
+            heroVideo.play().catch(() => {
+                // Autoplay blocked, show poster
+            });
+        }
+
+        // ============================================
+        // PREFERS REDUCED MOTION
+        // ============================================
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.querySelectorAll('.loader-ring, .scroll-indicator, .ceo-badge-ring').forEach(el => {
+                el.style.animation = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
